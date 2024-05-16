@@ -1,0 +1,12 @@
+body {
+  font-family: "Source Code Pro", monospace;
+}
+.sourceCodePro {
+  font-family: "Source Code Pro", monospace;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+.half {
+    width: 750px;
+}
