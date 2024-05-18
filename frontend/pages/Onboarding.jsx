@@ -4,7 +4,29 @@ import { useState } from "react";
 import { HomeHeader } from "../components/HomeHeader";
 
 export function Onboarding() {
+  // selectionOp 1 - sign in, 2 - register
   const [selectedOp, setSelectedOp] = useState(1);
+
+  // sign in form, submit function
+  const signin = (event) => {
+    event.preventDefault();
+    const mail = event.target.mail.value;
+    const pwd = event.target.pwd.value;
+    // check if mongodb has mail and pwd and move to dashboard page
+  };
+
+  // register form, submit function
+  const register = (event) => {
+    event.preventDefault();
+    const name = event.target.name.value;
+    const mail = event.target.mail.value;
+    const pwd = event.target.pwd.value;
+    const conpwd = event.target.conpwd.value;
+
+    if (pwd === conpwd){
+      // email OTP verification modal pop up
+    }
+  }
 
   return (
     <>
@@ -57,62 +79,82 @@ export function Onboarding() {
                 <div className="fw-light fw-bold my-3">
                   Welcome back hustler !!
                 </div>
-                <div className="fw-light fst-italic my-3">Username:</div>
-                <input
-                  className="form-control rounded my-3"
-                  type="text"
-                  placeholder="Type username"
-                  required
-                />
-                <div className="fw-light fst-italic my-3">Password:</div>
-                <input
-                  className="form-control rounded my-3"
-                  type="password"
-                  placeholder="Type password"
-                  required
-                />
-                <div className="text-center">
-                  <button className="btn btn-dark my-3">Login</button>
-                </div>
+                <form onSubmit={signin}>
+                  <div className="fw-light fst-italic my-3">EMail:</div>
+                  <input
+                    id="mail"
+                    className="form-control rounded my-3"
+                    type="email"
+                    placeholder="Type Email"
+                    required
+                  />
+                  <div className="fw-light fst-italic my-3">Password:</div>
+                  <input
+                    id="pwd"
+                    className="form-control rounded my-3"
+                    type="password"
+                    placeholder="Type password"
+                    required
+                  />
+                  <div className="text-center">
+                    <button className="btn btn-dark my-3" type="submit">
+                      Login
+                    </button>
+                  </div>
+                </form>
               </div>
               <div
                 id="register"
                 style={{ display: selectedOp === 2 ? "block" : "none" }}
               >
                 <div className="fw-light fw-bold my-3">Sign up here !!</div>
-                <div className="fw-light fst-italic my-3">Name:</div>
-                <input
-                  className="form-control rounded my-3"
-                  type="text"
-                  placeholder="Your name"
-                  required
-                />
-                <div className="fw-light fst-italic my-3">Mail ID:</div>
-                <input
-                  className="form-control rounded my-3"
-                  type="email"
-                  placeholder="Your mail ID"
-                  required
-                />
-                <div className="fw-light fst-italic my-3">Password:</div>
-                <input
-                  className="form-control rounded my-3"
-                  type="password"
-                  placeholder="Type password"
-                  required
-                />
-                <div className="fw-light fst-italic my-3">
-                  Confirm password:
-                </div>
-                <input
-                  className="form-control rounded my-3"
-                  type="password"
-                  placeholder="Retype password again"
-                  required
-                />
-                <div className="text-center">
-                  <button className="btn btn-dark my-3">Register</button>
-                </div>
+                <form onSubmit={register}>
+                  <div className="fw-light fst-italic my-3">Name:</div>
+                  <input
+                    name="name"
+                    className="form-control rounded my-3"
+                    type="text"
+                    placeholder="Your name"
+                    required
+                  />
+                  <div className="fw-light fst-italic my-3">Mail ID:</div>
+                  <input
+                    name="mail"
+                    className="form-control rounded my-3"
+                    type="email"
+                    placeholder="Your mail ID"
+                    required
+                  />
+                  <div className="fw-light fst-italic my-3">Password:</div>
+                  <input
+                    name="pwd"
+                    className="form-control rounded my-3"
+                    type="password"
+                    placeholder="Type password"
+                    onChange={(e) => {
+                      setPassword(e.target.value);
+                    }}
+                    required
+                  />
+                  <div className="fw-light fst-italic my-3">
+                    Confirm password:
+                  </div>
+                  <input
+                    name="conpwd"
+                    className="form-control rounded my-3"
+                    type="password"
+                    placeholder="Retype password again"
+                    onChange={(e) => {
+                      setConpass(e.target.value);
+                    }}
+                    required
+                  />
+                  <div className="text-center">
+                    <button className="btn btn-dark my-3" type="submit">
+                      Register
+                    </button>
+                  </div>
+                </form>
               </div>
             </div>
           </div>
