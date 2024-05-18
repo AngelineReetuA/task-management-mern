@@ -8,7 +8,7 @@ export function Onboarding() {
 
   return (
     <>
-      <div className="container d-flex flex-column flex-lg-row align-items-start pt-4 vh-100">
+      <div className="container d-flex flex-column flex-lg-row align-items-start pt-4 vh-95">
         <div className="flex-column text-center text-lg-start align-items-start align-items-lg-start vh-50 vh-lg-100">
           <div className="fs-1 fw-bolder sourceCodePro">Spread.</div>
           <div className="fs-4 sourceCodePro">
@@ -62,12 +62,14 @@ export function Onboarding() {
                   className="form-control rounded my-3"
                   type="text"
                   placeholder="Type username"
+                  required
                 />
                 <div className="fw-light fst-italic my-3">Password:</div>
                 <input
                   className="form-control rounded my-3"
                   type="password"
                   placeholder="Type password"
+                  required
                 />
                 <div className="text-center">
                   <button className="btn btn-dark my-3">Login</button>
@@ -83,18 +85,21 @@ export function Onboarding() {
                   className="form-control rounded my-3"
                   type="text"
                   placeholder="Your name"
+                  required
                 />
                 <div className="fw-light fst-italic my-3">Mail ID:</div>
                 <input
                   className="form-control rounded my-3"
                   type="email"
                   placeholder="Your mail ID"
+                  required
                 />
                 <div className="fw-light fst-italic my-3">Password:</div>
                 <input
                   className="form-control rounded my-3"
                   type="password"
                   placeholder="Type password"
+                  required
                 />
                 <div className="fw-light fst-italic my-3">
                   Confirm password:
@@ -103,6 +108,7 @@ export function Onboarding() {
                   className="form-control rounded my-3"
                   type="password"
                   placeholder="Retype password again"
+                  required
                 />
                 <div className="text-center">
                   <button className="btn btn-dark my-3">Register</button>
