@@ -2,31 +2,82 @@ import React from "react";
 import "../styles/styles.css";
 import { useState } from "react";
 import { HomeHeader } from "../components/HomeHeader";
+import Swal from "sweetalert2";
+import {
+  createUserWithEmailAndPassword,
+  sendEmailVerification,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
+import { auth } from "../config/firebase.config";
 
 export function Onboarding() {
   // selectionOp 1 - sign in, 2 - register
   const [selectedOp, setSelectedOp] = useState(1);
 
   // sign in form, submit function
-  const signin = (event) => {
+  const signin = async (event) => {
     event.preventDefault();
     const mail = event.target.mail.value;
     const pwd = event.target.pwd.value;
-    // check if mongodb has mail and pwd and move to dashboard page
+    try {
+      const userCred = await signInWithEmailAndPassword(auth, mail, pwd);
+      const user = userCred.user;
+
+      if (user.emailVerified) {
+        Swal.fire({
+          title: "Welcome!",
+          text: "You have successfully signed in.",
+          icon: "success",
+        });
+        // move to dashboard
+      } else {
+        Swal.fire({
+          title: "Email not verified!",
+          text: "Please verify your email before signing in.",
+          icon: "warning",
+        });
+      }
+    } catch (error) {
+      Swal.fire({
+        title: "Error",
+        text: error.message,
+        icon: "error",
+      });
+    }
   };
 
   // register form, submit function
-  const register = (event) => {
+  const register = async (event) => {
     event.preventDefault();
-    const name = event.target.name.value;
-    const mail = event.target.mail.value;
-    const pwd = event.target.pwd.value;
-    const conpwd = event.target.conpwd.value;
 
-    if (pwd === conpwd){
-      // email OTP verification modal pop up
+    if (event.target.pwd.value === event.target.conpwd.value) {
+      try {
+        const userCred = await createUserWithEmailAndPassword(
+          auth,
+          event.target.mail.value,
+          event.target.pwd.value
+        );
+        const user = userCred.user;
+        await sendEmailVerification(user);
+        Swal.fire({
+          title: "Yay!",
+          text: "Please verify through email and proceed to sign in",
+          icon: "success",
+        });
+      } catch (error) {
+        Swal.fire({
+          title: "Oops!",
+          text: error.message,
+        });
+      }
+    } else {
+      Swal.fire({
+        title: "Oops!",
+        text: "Your passwords do not match",
+        icon: "error",
+      });
     }
-  }
+  };
 
   return (
     <>
@@ -131,9 +182,6 @@ export function Onboarding() {
                     className="form-control rounded my-3"
                     type="password"
                     placeholder="Type password"
-                    onChange={(e) => {
-                      setPassword(e.target.value);
-                    }}
                     required
                   />
                   <div className="fw-light fst-italic my-3">
@@ -144,9 +192,6 @@ export function Onboarding() {
                     className="form-control rounded my-3"
                     type="password"
                     placeholder="Retype password again"
-                    onChange={(e) => {
-                      setConpass(e.target.value);
-                    }}
                     required
                   />
                   <div className="text-center">
