@@ -1,9 +1,11 @@
 import React from "react";
+import { HomeHeader } from "../components/HomeHeader";
 import "../styles/styles.css";
 
 const About = () => {
   return (
     <>
+      <HomeHeader />
       <div className="container p-5">
         <h4 className="sourceCodePro fw-bold">Spread</h4>
         <br />
