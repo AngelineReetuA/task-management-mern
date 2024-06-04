@@ -34,7 +34,9 @@ export function Onboarding() {
           showConfirmButton: false,
           timer: 1500,
         });
-        navigate(`/${mail.split("@")[0]}`, {state: {mail: mail.split("@")[0]}});
+        navigate(`/${mail.split("@")[0]}`, {
+          state: { mail: mail.split("@")[0] },
+        });
       } else {
         Swal.fire({
           title: "Email not verified!",
@@ -166,14 +168,6 @@ export function Onboarding() {
               >
                 <div className="fw-light fw-bold my-3">Sign up here !!</div>
                 <form onSubmit={register}>
-                  <div className="fw-light fst-italic my-3">Name:</div>
-                  <input
-                    name="name"
-                    className="form-control rounded my-3"
-                    type="text"
-                    placeholder="Your name"
-                    required
-                  />
                   <div className="fw-light fst-italic my-3">Mail ID:</div>
                   <input
                     name="mail"
