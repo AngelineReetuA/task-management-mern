@@ -1,9 +1,11 @@
 import React from "react";
 import "../styles/styles.css";
+import { HomeHeader } from "../components/HomeHeader";
 
 const Help = () => {
   return (
     <>
+      <HomeHeader />
       <div className="container p-5">
         <h4 className="sourceCodePro fw-bold">
           Help to navigate through Spread

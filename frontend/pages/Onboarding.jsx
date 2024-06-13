@@ -1,6 +1,7 @@
 import React from "react";
 import "../styles/styles.css";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { HomeHeader } from "../components/HomeHeader";
 import Swal from "sweetalert2";
 import {
@@ -13,6 +14,8 @@ import { auth } from "../config/firebase.config";
 export function Onboarding() {
   // selectionOp 1 - sign in, 2 - register
   const [selectedOp, setSelectedOp] = useState(1);
+
+  const navigate = useNavigate();
 
   // sign in form, submit function
   const signin = async (event) => {
@@ -28,8 +31,12 @@ export function Onboarding() {
           title: "Welcome!",
           text: "You have successfully signed in.",
           icon: "success",
+          showConfirmButton: false,
+          timer: 1500,
         });
-        // move to dashboard
+        navigate(`/${mail.split("@")[0]}`, {
+          state: { mail: mail.split("@")[0] },
+        });
       } else {
         Swal.fire({
           title: "Email not verified!",
@@ -81,6 +88,7 @@ export function Onboarding() {
 
   return (
     <>
+      <HomeHeader />
       <div className="container d-flex flex-column flex-lg-row align-items-start pt-4 vh-95">
         <div className="flex-column text-center text-lg-start align-items-start align-items-lg-start vh-50 vh-lg-100">
           <div className="fs-1 fw-bolder sourceCodePro">Spread.</div>
@@ -131,7 +139,7 @@ export function Onboarding() {
                   Welcome back hustler !!
                 </div>
                 <form onSubmit={signin}>
-                  <div className="fw-light fst-italic my-3">EMail:</div>
+                  <div className="fw-light fst-italic my-3">Email:</div>
                   <input
                     id="mail"
                     className="form-control rounded my-3"
@@ -160,14 +168,6 @@ export function Onboarding() {
               >
                 <div className="fw-light fw-bold my-3">Sign up here !!</div>
                 <form onSubmit={register}>
-                  <div className="fw-light fst-italic my-3">Name:</div>
-                  <input
-                    name="name"
-                    className="form-control rounded my-3"
-                    type="text"
-                    placeholder="Your name"
-                    required
-                  />
                   <div className="fw-light fst-italic my-3">Mail ID:</div>
                   <input
                     name="mail"
