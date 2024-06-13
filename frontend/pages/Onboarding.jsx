@@ -139,7 +139,7 @@ export function Onboarding() {
                   Welcome back hustler !!
                 </div>
                 <form onSubmit={signin}>
-                  <div className="fw-light fst-italic my-3">EMail:</div>
+                  <div className="fw-light fst-italic my-3">Email:</div>
                   <input
                     id="mail"
                     className="form-control rounded my-3"
