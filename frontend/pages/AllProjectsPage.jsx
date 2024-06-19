@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { getAuth, signOut } from "firebase/auth";
 import { Modal, Button, Form } from "react-bootstrap";
+import ClipLoader from "react-spinners/ClipLoader";
 
 export function AllProjectsPage() {
   // archived show toggles
@@ -32,15 +33,18 @@ export function AllProjectsPage() {
   }
 
   // for create project modal
+  var date = new Date(Date.now()).toString();
+
   const [formData, setFormData] = useState({
     name: "",
     type: "",
     desc: "",
-    date: `${Date.now()}`,
+    date: date,
     creator: uname,
   });
 
   const [showModal, setShowModal] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleChange = (e) => {
     const { name, value, type } = e.target;
@@ -57,16 +61,34 @@ export function AllProjectsPage() {
 
   const handleCloseModal = () => {
     setShowModal(false);
+    setIsLoading(false);
   };
 
-  const handleSubmit = (formData) => {
+  const handleSubmit = async (formData) => {
     console.log("Form submitted:", formData);
-    Swal.fire("Form submitted successfully!");
+
+    // call api to save project details in db
+    const res = await fetch("http://localhost:3000/create-proj", {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+      method: "POST",
+    });
+
+    if (res.ok) {
+      Swal.fire("Project created successfully!");
+    } else {
+      Swal.fire("Uh oh.. we encountered an issue. Please try again.");
+    }
   };
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
-    handleSubmit(formData);
+    setIsLoading(true);
+    await handleSubmit(formData);
+    setIsLoading(false);
     handleCloseModal();
   };
 
@@ -167,59 +189,67 @@ export function AllProjectsPage() {
           <Modal.Title className="fw-bold">Create a new project</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form onSubmit={onSubmit}>
-            <Form.Group controlId="name">
-              <Form.Label className="fw-bold">Name</Form.Label>
-              <Form.Control
-                className="mb-3"
-                type="text"
-                name="name"
-                value={formData.name}
-                onChange={handleChange}
-                required
-              />
-            </Form.Group>
-            <Form.Group controlId="type">
-              <div className="d-flex align-items-center">
-                <Form.Label className="mr-2 pe-3 fw-bold">Type</Form.Label>
-                <Form.Check
-                  inline
-                  value="in"
-                  type="radio"
-                  aria-label="radio 1"
-                  label="Individual"
-                  name="type"
-                  onChange={handleChange}
-                  checked={formData.type === "in"}
-                />
-                <Form.Check
-                  inline
-                  value="te"
-                  type="radio"
-                  aria-label="radio 2"
-                  label="Team"
-                  name="type"
-                  onChange={handleChange}
-                  checked={formData.type === "te"}
-                />
-              </div>
-            </Form.Group>
-            <Form.Group controlId="desc">
-              <Form.Label className="fw-bold">Description</Form.Label>
-              <Form.Control
-                className="mb-3"
-                as="textarea"
-                name="desc"
-                value={formData.desc}
-                onChange={handleChange}
-                rows={3}
-                required
-              />
-            </Form.Group>
-            <Button variant="primary" type="submit">
-              Submit
-            </Button>
-          </Form>
+          {isLoading ? (
+            <div className="text-center">
+              <ClipLoader color={"#123abc"} loading={isLoading} size={50} />
+            </div>
+          ) : (
+            <>
+              <Form onSubmit={onSubmit}>
+                <Form.Group controlId="name">
+                  <Form.Label className="fw-bold">Name</Form.Label>
+                  <Form.Control
+                    className="mb-3"
+                    type="text"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleChange}
+                    required
+                  />
+                </Form.Group>
+                <Form.Group controlId="type">
+                  <div className="d-flex align-items-center">
+                    <Form.Label className="mr-2 pe-3 fw-bold">Type</Form.Label>
+                    <Form.Check
+                      inline
+                      value="in"
+                      type="radio"
+                      aria-label="radio 1"
+                      label="Individual"
+                      name="type"
+                      onChange={handleChange}
+                      checked={formData.type === "in"}
+                    />
+                    <Form.Check
+                      inline
+                      value="te"
+                      type="radio"
+                      aria-label="radio 2"
+                      label="Team"
+                      name="type"
+                      onChange={handleChange}
+                      checked={formData.type === "te"}
+                    />
+                  </div>
+                </Form.Group>
+                <Form.Group controlId="desc">
+                  <Form.Label className="fw-bold">Description</Form.Label>
+                  <Form.Control
+                    className="mb-3"
+                    as="textarea"
+                    name="desc"
+                    value={formData.desc}
+                    onChange={handleChange}
+                    rows={3}
+                    required
+                  />
+                </Form.Group>
+                <Button variant="primary" type="submit">
+                  Submit
+                </Button>
+              </Form>
+            </>
+          )}
         </Modal.Body>
       </Modal>
     </>
